@@ -1,15 +1,11 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import {Heading, ButtonContainer, ListContainer} from './Component/index'
+import {App} from './App'
 import './assets/style.css'
 
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-	<div className="app">
-    <Heading />
-	<ButtonContainer />
-	<ListContainer />
-	</div>
+	<App />
   </StrictMode>,
 )
