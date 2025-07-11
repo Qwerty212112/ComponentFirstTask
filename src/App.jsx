@@ -1,35 +1,68 @@
+import './assets/index.css'
+import styles from './assets/app.module.css'
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+export function App() {
+
+const [value, setValue] = useState('');
+const [list, setList] = useState([]);
+const [error, setError] = useState('')
+const [isValueVaild, setValueValid] = useState(true)
+const [noMarginText, setNoMarginText] = useState('Нет добавленных элементов');
+
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+	<div className={styles.app}>
+		<h1 className={styles.pageHeading}>Ввод значения</h1>
+		<p className={styles.noMarginText}> Текущее значение <code>value</code>: "<output className={styles.currentValue}>{value}</output>"</p>
+		<div className={styles.error}>{error}</div>
+
+		<div className={styles.buttonsContainer}>
+			<button className={styles.button} onClick={onInputButtonClick}>Ввести новое</button>
+			<button className={styles.button} disabled={isValueVaild} onClick={onAddButtonClick}>Добавить в список</button>
+		</div>
+		<div className={styles.li}>
+			<h2 className={styles.listHeading}>Список:</h2>
+			<p className={styles.noMarginText}>{noMarginText}</p>
+			<ul className={styles.list}>
+				  {list.map(item => <li key={item.id}>{item.value}</li>)}
+			</ul>
+		</div>
+	</div>
     </>
   )
+
+  function onInputButtonClick() {
+	const valuePrompt = prompt('Введите значение')
+	setValue(valuePrompt)
+	filterValue(valuePrompt)
+	}
+
+	function filterValue (value) {
+		if (value.length < 3) {
+		const textError = 'Введенное значение должно содержать минимум 3 символа'
+		setError(textError)
+		setValueValid(true)
+
+	} else {
+		setError('')
+		setValueValid(false)
+	}
+	}
+
+	function onAddButtonClick() {
+		const correctValue = {
+			id: Date.now(),
+			value:value
+		}
+	const updatedList = [...list, correctValue]
+	setList(updatedList)
+	setValue('')
+	setValueValid(true)
+	setNoMarginText('')
+	}
+
 }
 
-export default App
+
